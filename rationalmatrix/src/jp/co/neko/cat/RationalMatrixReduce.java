@@ -185,7 +185,7 @@ public class RationalMatrixReduce {
 			Rational detA = new Rational(sign,1);
 
 			for (int i = 0; i < A.length; i++) {
-				detA = mul(detA,Diagonal[i]);
+				detA = mul(detA, Diagonal[i]);
 			}
 
 			System.out.print("行列式は");

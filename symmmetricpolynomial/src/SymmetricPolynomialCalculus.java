@@ -4,7 +4,7 @@ public class SymmetricPolynomialCalculus {
 
 	public static void main(String[] args) {
 		int [] mono = {7,2,1,1};
-		int [][][]P = Orbit(mono);
+		int [][][]P = orbit(mono);
 		int n = mono.length;
 		int [] exp = new int[n];
 
@@ -47,16 +47,16 @@ public class SymmetricPolynomialCalculus {
 		}
 
 		for(int i = 0; i < n; i++) {
-			s[i] = Orbit(S[i]);
+			s[i] = orbit(S[i]);
 		}
 
 
 		while(P.length != 0) {
 			for(int i = 0; i < n; i++) {
 				if(i == n-1) {
-					exp[i] = Lterm(P)[1][i];
+					exp[i] = leadingTerm(P)[1][i];
 				} else {
-					exp[i] = Lterm(P)[1][i] - Lterm(P)[1][i+1];
+					exp[i] = leadingTerm(P)[1][i] - leadingTerm(P)[1][i+1];
 				}
 			}
 
@@ -65,10 +65,10 @@ public class SymmetricPolynomialCalculus {
 				v--;
 			}
 
-			if(Lterm(P)[0][0] > 0) {
-				System.out.print("+" + Lterm(P)[0][0] + " * ");
+			if(leadingTerm(P)[0][0] > 0) {
+				System.out.print("+" + leadingTerm(P)[0][0] + " * ");
 			} else {
-				System.out.print(Lterm(P)[0][0] + " * ");
+				System.out.print(leadingTerm(P)[0][0] + " * ");
 			}
 			for(int i = 0; i <= v; i++) {
 
@@ -78,7 +78,7 @@ public class SymmetricPolynomialCalculus {
 					System.out.print("s"+ (i+1) + "^" + exp[i]);
 				} 
 			}
-			P = Minus(P,Termpow(Lterm(P),s));
+			P = minus(P,termPow(leadingTerm(P),s));
 			System.out.println();
 		}
 
@@ -118,7 +118,7 @@ public class SymmetricPolynomialCalculus {
 		return U;
 	}
 
-	public static int [][][] Orbit(int [] A){//n次対称群による、単項式の軌道多項式を返す関数
+	public static int [][][] orbit(int [] A){//n次対称群による、単項式の軌道多項式を返す関数
 		int n = A.length;
 		int N = factorial(n);
 		int [][] V = new int [N][];
@@ -152,7 +152,7 @@ public class SymmetricPolynomialCalculus {
 		int [][][] NewP = U[0];
 		if(PermA.length > 1) {
 			for(int i = 1; i < PermA.length; i++) {
-				NewP = Plus(NewP,U[i]);
+				NewP = plus(NewP,U[i]);
 			}
 		}
 
@@ -163,7 +163,7 @@ public class SymmetricPolynomialCalculus {
 		return NewP;
 	}
 
-	public static int [][][] Zerodelete(int [][][] P){//係数0の単項式を削除する関数
+	public static int [][][] zeroDelete(int [][][] P){//係数0の単項式を削除する関数
 
 		int M = P.length; 
 		int [][][] Zero = new int[0][][];
@@ -223,9 +223,7 @@ public class SymmetricPolynomialCalculus {
 		return NewP;
 	}
 
-
-
-	public static int [][][] Plus(int [][][] P, int [][][] Q){//多項式の足し算
+	public static int [][][] plus(int [][][] P, int [][][] Q){//多項式の足し算
 
 		int M = Math.max(P.length,Q.length); 
 
@@ -324,11 +322,11 @@ public class SymmetricPolynomialCalculus {
 			}
 		}
 
-		return Zerodelete(U);
+		return zeroDelete(U);
 
 	}
 
-	public static int [][][] Minus(int [][][] P, int [][][] Q){//多項式の引き算
+	public static int [][][] minus(int [][][] P, int [][][] Q){//多項式の引き算
 		int M = Q.length; 
 
 		int varnum = P[0][1].length;
@@ -352,10 +350,9 @@ public class SymmetricPolynomialCalculus {
 			R[i][1] = Q[i][1];
 		}
 
-		return Plus(P,R);
+		return plus(P,R);
 
 	}
-
 
 	public static int [][][] multiple(int [][] mono, int [][][] P){//単項式と多項式の掛け算
 
@@ -389,10 +386,10 @@ public class SymmetricPolynomialCalculus {
 			}
 		}
 
-		return Zerodelete(Q);
+		return zeroDelete(Q);
 	}
 
-	public static int [][][] Multiple(int [][][] P, int [][][] Q){//多項式の掛け算
+	public static int [][][] multiple(int [][][] P, int [][][] Q){//多項式の掛け算
 
 		int M = P.length; 
 		int [][][]R;
@@ -400,13 +397,13 @@ public class SymmetricPolynomialCalculus {
 
 		if(M >= 2) {
 			for(int i = 1; i < M; i++) {
-				R = Zerodelete(Plus(R,multiple(P[i],Q)));
+				R = zeroDelete(plus(R,multiple(P[i],Q)));
 			}
 		}
 		return R;
 	}
 
-	public static int [][][] Pow(int [][][] P, int e){//多項式のべき乗
+	public static int [][][] pow(int [][][] P, int e){//多項式のべき乗
 		int [][][]R;
 		if(e == 0) {
 			R = new int [1][][];   //Rの定義
@@ -423,13 +420,13 @@ public class SymmetricPolynomialCalculus {
 
 		if(e > 1) {
 			for(int i = 1; i <= e-1; i++) {
-				R = Multiple(P,R);
+				R = multiple(P,R);
 			}
 		}
 		return R;
 	}
 
-	public static int [][] Maxlex(int [][] mono1, int [][] mono2){//辞書式順序関数
+	public static int [][] lexMax(int [][] mono1, int [][] mono2){//辞書式順序関数
 		int [][] M;
 		int i = 0;
 		if(Arrays.equals(mono1[1], mono2[1])){
@@ -449,23 +446,23 @@ public class SymmetricPolynomialCalculus {
 		return M;
 	}
 
-	public static int [][] Lterm(int P[][][]){//辞書式順序に関する先頭項を返す関数
+	public static int [][] leadingTerm(int P[][][]){//辞書式順序に関する先頭項を返す関数
 		int [][] LT;
 		LT = P[0];
 		if(P.length > 1) {
 			for(int i =1; i < P.length; i++) {
-				LT = Maxlex(P[i], LT);
+				LT = lexMax(P[i], LT);
 			}
 		}
 		return LT;
 	}
 
-	public static int [][][] Termpow(int mono[][], int s[][][][]){//先頭項を消す多項式を作るための関数
+	public static int [][][] termPow(int mono[][], int s[][][][]){//先頭項を消す多項式を作るための関数
 		int v = s.length;
-		int [][][] P = Pow(s[v-1],mono[1][v-1]);
+		int [][][] P = pow(s[v-1],mono[1][v-1]);
 
 		for(int i = 1; i < v; i++) {
-			P = Multiple(P,Pow(s[v-i-1], mono[1][v-i-1] - mono[1][v-i]));
+			P = multiple(P,pow(s[v-i-1], mono[1][v-i-1] - mono[1][v-i]));
 		}
 
 		for(int i = 0; i < P.length; i++) {
@@ -475,8 +472,3 @@ public class SymmetricPolynomialCalculus {
 	}
 
 }
-
-
-
-
-

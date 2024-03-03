@@ -72,23 +72,23 @@ public class DominateEigenvalueCalculator {
 		int N = 10; //ループ回数を指定
 
 		System.out.println("以下の複素正方行列の、絶対値が最大の固有値の近似値計算を行います。\n");
-		Showmat(A_real,A_image);
+		showMatrix(A_real,A_image);
 		System.out.println("☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆");
 		
 		System.out.println("ベクトルの初期値は以下の通り");
-		Showmat(x,y);
+		showMatrix(x,y);
 		System.out.println("☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆");
 
 		for(int i=1; i<=N; i++) {
 			x_new = plus(multiple(A_real,x),scalar(-1,multiple(A_image,y)));
 			y_new = plus(multiple(A_real,y),multiple(A_image,x));
 			//if(i >= N-10) {
-			double a = innerproduct(x_new, x_new) - innerproduct(y_new, y_new);
-			double b = 2*innerproduct(x_new, y_new);
-			double c = innerproduct(x_new, x) - innerproduct(y_new, y);
-			double d = innerproduct(x_new, y) + innerproduct(x, y_new);
+			double a = innerProduct(x_new, x_new) - innerProduct(y_new, y_new);
+			double b = 2*innerProduct(x_new, y_new);
+			double c = innerProduct(x_new, x) - innerProduct(y_new, y);
+			double d = innerProduct(x_new, y) + innerProduct(x, y_new);
 			/*System.out.println("↓初期ベクトルにAを" + N + "回掛けて得られたベクトル\n");
-			Showmat(x_new,y_new);*/
+			showMatrix(x_new,y_new);*/
 			System.out.println(i + "回目の計算結果");
 			System.out.println("固有値の実部: " + (a*c+b*d)/(c*c+d*d));
 			System.out.println("固有値の虚部: " + (b*c - a*d)/(c*c+d*d));
@@ -101,7 +101,7 @@ public class DominateEigenvalueCalculator {
 
 
 	//行列を参照する関数
-	public static void Showmat(double [][]A, double [][]B){
+	public static void showMatrix(double [][]A, double [][]B){
 		for (int i = 0; i <= A.length-1; i++) {
 			for (int j = 0; j <= A[0].length-1; j++) {
 				if (A[i][j] == 0 && B[i][j] != 0) {
@@ -157,7 +157,7 @@ public class DominateEigenvalueCalculator {
 	}
 
 	//ベクトルの内積関数
-	public static double innerproduct(double [][]x, double [][]y){
+	public static double innerProduct(double [][]x, double [][]y){
 		double val = 0;
 		for(int k = 0; k<=x.length-1; k++) {
 			val = val + x[k][0]*y[k][0];
