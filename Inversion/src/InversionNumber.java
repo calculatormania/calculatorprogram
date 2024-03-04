@@ -70,7 +70,7 @@ public class InversionNumber {
 	
 	}
 
-	public static int search(int [] A, int finalpoint) {
+	public static int search(int [] A, int finalpoint) {   //偶数なら2で割った値を，奇数なら3倍して1足した値を返す
 
 		int p = 0;
 
